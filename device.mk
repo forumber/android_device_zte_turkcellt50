@@ -50,7 +50,7 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
 
 # Screen density
-PRODUCT_AAPT_CONFIG := normal hdpi xhdpi
+PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := xhdpi
 
 # Boot animation
@@ -65,8 +65,7 @@ PRODUCT_PACKAGES += \
     audio.a2dp.default \
     audio.primary.msm8226 \
     audio.r_submix.default \
-    audio.usb.default \
-    audio_policy.msm8226
+    audio.usb.default
 
 PRODUCT_PACKAGES += \
     libaudio-resampler \
@@ -86,33 +85,18 @@ PRODUCT_PACKAGES += \
     libxml2 \
     camera.msm8226
 
-# CRDA
-PRODUCT_PACKAGES += \
-    crda \
-    linville.key.pub.pem \
-    regdbdump \
-    regulatory.bin
-
 # Display
 PRODUCT_PACKAGES += \
     copybit.msm8226 \
     gralloc.msm8226 \
     hwcomposer.msm8226 \
-    memtrack.msm8226 \
-    liboverlay
+    memtrack.msm8226
 
 # Ebtables
 PRODUCT_PACKAGES += \
     ebtables \
     ethertypes \
     libebtc
-
-# Filesystem
-PRODUCT_PACKAGES += \
-    e2fsck \
-    make_ext4fs \
-    resize2fs \
-    setup_fs
 
 # FM
 PRODUCT_PACKAGES += \
@@ -131,21 +115,17 @@ PRODUCT_PACKAGES += \
 
 # Media
 PRODUCT_COPY_FILES += \
+    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml \
     $(LOCAL_PATH)/configs/media_codecs.xml:system/etc/media_codecs.xml \
     $(LOCAL_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml
 
 # OMX
 PRODUCT_PACKAGES += \
-    libc2dcolorconvert \
     libdashplayer \
-    libdivxdrmdecrypt \
-    libOmxAacEnc \
-    libOmxAmrEnc \
     libOmxCore \
-    libOmxEvrcEnc \
-    libOmxQcelp13Enc \
     libOmxVdec \
-    libOmxVdecHevc \
     libOmxVenc \
     libstagefrighthw \
     qcmediaplayer
@@ -157,11 +137,6 @@ PRODUCT_BOOT_JARS += \
 PRODUCT_PACKAGES += \
     power.msm8226
 
-# QRNG
-PRODUCT_PACKAGES += \
-    qrngd \
-    qrngp
-
 # etc scripts
 PRODUCT_PACKAGES += \
     init.qcom.bt.sh \
@@ -172,7 +147,6 @@ PRODUCT_PACKAGES += \
 # Ramdisk
 PRODUCT_PACKAGES += \
     fstab.qcom \
-    init.class_main.sh \
     init.qcom.class_core.sh \
     init.qcom.rc \
     init.qcom.sh \
@@ -181,19 +155,17 @@ PRODUCT_PACKAGES += \
     init.qcom.usb.sh \
     ueventd.qcom.rc
 
-# Torch
-PRODUCT_PACKAGES += \
-    Torch
-
 # USB
 PRODUCT_PACKAGES += \
     com.android.future.usb.accessory
 
 # Wifi
 PRODUCT_PACKAGES += \
-    hostapd.accept \
-    hostapd.deny \
-    hostapd_default.conf
+    dhcpcd.conf \
+    hostapd_default.conf \
+    hostapd \
+    wpa_supplicant \
+    wpa_supplicant.conf
 
 PRODUCT_PACKAGES += \
     p2p_supplicant_overlay.conf \
@@ -203,7 +175,6 @@ PRODUCT_PACKAGES += \
     libcurl \
     libqsap_sdk \
     libQWiFiSoftApCfg \
-    libwcnss_qmi \
     wcnss_service
 
 PRODUCT_COPY_FILES += \

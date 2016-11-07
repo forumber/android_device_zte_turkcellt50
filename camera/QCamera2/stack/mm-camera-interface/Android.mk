@@ -25,15 +25,17 @@ LOCAL_COPY_HEADERS_TO := mm-camera-interface
 LOCAL_COPY_HEADERS += ../common/cam_intf.h
 LOCAL_COPY_HEADERS += ../common/cam_types.h
 
+
 LOCAL_C_INCLUDES := \
     $(LOCAL_PATH)/inc \
+    system/media/camera/include \
     $(LOCAL_PATH)/../common
 
 LOCAL_C_INCLUDES += $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include
 LOCAL_C_INCLUDES += $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include/media
 LOCAL_ADDITIONAL_DEPENDENCIES := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
 
-LOCAL_C_INCLUDES += hardware/qcom/media-caf-new/mm-core/inc
+LOCAL_C_INCLUDES += $(call project-path-for,qcom-media)/mm-core/inc
 
 ifneq ($(call is-platform-sdk-version-at-least,17),true)
   LOCAL_CFLAGS += -include bionic/libc/kernel/common/linux/socket.h
@@ -44,7 +46,6 @@ LOCAL_CFLAGS += -Wall -Werror
 LOCAL_SRC_FILES := $(MM_CAM_FILES)
 
 LOCAL_MODULE           := libmmcamera_interface
-LOCAL_PRELINK_MODULE   := false
 LOCAL_SHARED_LIBRARIES := libdl libcutils liblog
 LOCAL_MODULE_TAGS := optional
 

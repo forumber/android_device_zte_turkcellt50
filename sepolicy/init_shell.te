@@ -1,4 +1,3 @@
-allow init_shell sysfs_writable:file setattr;
-#su
-allow init_shell device:fifo_file { read write ioctl getattr };
-
+# for init_falcon to read filesystem type
+allow init_shell userdata_block_device:blk_file { getattr open read ioctl };
+allow init_shell utags_block_device:blk_file { open read };

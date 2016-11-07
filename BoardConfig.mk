@@ -16,15 +16,13 @@
 
 LOCAL_PATH := device/zte/turkcellt50
 
-TARGET_SPECIFIC_HEADER_PATH := device/zte/turkcellt50/include
-
 # Architecture
 TARGET_ARCH := arm
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
-TARGET_CPU_SMP := true
 TARGET_CPU_VARIANT := krait
+TARGET_CPU_MEMCPY_BASE_OPT_DISABLE := true
 TARGET_BOARD_PLATFORM := msm8226
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno305
 
@@ -34,30 +32,25 @@ TARGET_NO_BOOTLOADER := true
 
 # Audio
 AUDIO_FEATURE_DISABLED_ANC_HEADSET := true
-AUDIO_FEATURE_DISABLED_DS1_DOLBY_DDP := true
-AUDIO_FEATURE_DISABLED_SSR := true
+AUDIO_FEATURE_ENABLED_MULTI_VOICE_SESSIONS := true
 BOARD_USES_ALSA_AUDIO := true
-TARGET_QCOM_AUDIO_VARIANT := caf
 
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_QCOM := true
+BLUETOOTH_HCI_USE_MCT := true
 
 # Camera
 USE_DEVICE_SPECIFIC_CAMERA := true
 TARGET_USE_VENDOR_CAMERA_EXT := true
-
-# Classpath
-PRODUCT_BOOT_JARS := $(subst $(space),:,$(PRODUCT_BOOT_JARS))
+BOARD_USES_LEGACY_MMAP := true
 
 # CMHW
 BOARD_HARDWARE_CLASS := $(LOCAL_PATH)/cmhw/
 
 # Display
-BOARD_EGL_CFG := $(LOCAL_PATH)/configs/egl.cfg
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
-TARGET_QCOM_DISPLAY_VARIANT := caf-new
 TARGET_USES_C2D_COMPOSITION := true
 TARGET_USES_ION := true
 USE_OPENGL_RENDERER := true
@@ -65,6 +58,9 @@ USE_OPENGL_RENDERER := true
 # FM
 AUDIO_FEATURE_ENABLED_FM := true
 TARGET_QCOM_NO_FM_FIRMWARE := true
+
+# Fonts
+EXTENDED_FONT_FOOTPRINT := true
 
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
@@ -80,9 +76,8 @@ BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100 --d
 TARGET_KERNEL_SOURCE := kernel/zte/turkcellt50
 TARGET_KERNEL_CONFIG := msm8226_P892T50_defconfig
 
-# Media
-TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
-TARGET_QCOM_MEDIA_VARIANT := caf-new
+# Memory
+MALLOC_IMPL := dlmalloc
 
 # (for Motorola libraries)
 TARGET_USES_MOTOROLA_LOG := true
@@ -95,73 +90,47 @@ BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_BOOTIMAGE_PARTITION_SIZE := 16777216
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 16777216
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1266679808
-BOARD_HAS_LARGE_FILESYSTEM := true
 
 # Qualcomm support
-COMMON_GLOBAL_CFLAGS += -DQCOM_BSP
-COMMON_GLOBAL_CFLAGS += -DQCOM_HARDWARE
 BOARD_USES_QCOM_HARDWARE := true
-TARGET_USES_QCOM_BSP := true
 
 # Recovery
-BOARD_HAS_NO_SELECT_BUTTON := true
-BOARD_RECOVERY_SWIPE := true
-BOARD_SUPPRESS_EMMC_WIPE := true
-BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_15x24.h\"
+COMMON_GLOBAL_CFLAGS += -DNO_SECURE_DISCARD
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.qcom
 
 # SELinux
+-include device/qcom/sepolicy/sepolicy.mk
+
 BOARD_SEPOLICY_DIRS += \
-    $(LOCAL_PATH)/sepolicy
+    device/zte/turkcellt50/sepolicy
 
 BOARD_SEPOLICY_UNION += \
-    adbd.te \
-    app.te \
-    bluetooth_loader.te \
-    bridge.te \
-    camera.te \
+    akmd8963.te \
+    atvc.te \
+    batt_health.te \
     device.te \
-    dhcp.te \
-    dnsmasq.te \
-    domain.te \
-    drmserver.te \
     file_contexts \
     file.te \
-    hostapd.te \
-    init_shell.te \
     init.te \
-    libqc-opt.te \
+    init_shell.te \
+    kernel.te \
+    keystore.te \
     mediaserver.te \
+    mm-qcamerad.te \
     mpdecision.te \
-    netd.te \
-    netmgrd.te \
-    nfc.te \
+    platform_app.te \
     property_contexts \
     property.te \
-    qcom.te \
-    qmux.te \
-    radio.te \
     rild.te \
-    rmt.te \
-    sdcard_internal.te \
-    sdcardd.te \
-    sensors.te \
-    shell.te \
-    surfaceflinger.te \
-    system.te \
-    tee.te \
-    te_macros \
-    thermald.te \
+    rmt_storage.te \
+    sensord.te \
+    system_app.te \
+    system_server.te \
+    thermal-engine.te \
     ueventd.te \
-    vold.te \
-    wpa_supplicant.te \
-    zygote.te
-
-ifneq ($(TARGET_BUILD_VARIANT),user)
-    BOARD_SEPOLICY_UNION += su.te
-endif
+    vold.te
 
 # Vold
 BOARD_VOLD_DISC_HAS_MULTIPLE_MAJORS := true
