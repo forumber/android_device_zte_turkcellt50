@@ -26,6 +26,8 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+rm -rf /persist/*
+
 target=`getprop ro.board.platform`
 if [ -f /sys/devices/soc0/soc_id ]; then
     platformid=`cat /sys/devices/soc0/soc_id`
@@ -38,7 +40,7 @@ fi
 start_sensors()
 {
     if [ -c /dev/msm_dsps -o -c /dev/sensors ]; then
-	mkdir -p /persist/sensors
+        mkdir -p /persist/sensors
         touch /persist/sensors/sensors_settings
         chmod -h 775 /persist/sensors
         chmod -h 664 /persist/sensors/sensors_settings
@@ -54,7 +56,6 @@ start_sensors()
         fi
 ####added by chenhui for update sns.reg begin
 		if [ ! -f /persist/sensors/sns0304 ]; then		
-		  # rm -f /persist/sensors/sns.reg  #modify by chenhui for compatible the older version
 		   touch /persist/sensors/sns0304
 		fi
 		
