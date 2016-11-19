@@ -9,3 +9,13 @@ else
     echo 'Audio fix for T50 is already applied';
 fi
 croot
+
+cd build
+if grep -q "block " core/Makefile
+then
+    git am ../device/zte/turkcellt50/Disable-block-based-installation.patch || git am --abort
+    echo 'Disabled block based flashing';
+else
+    echo 'Block based flashing is already disabled';
+fi
+croot

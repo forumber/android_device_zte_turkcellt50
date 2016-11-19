@@ -1,0 +1,17 @@
+From 423c85858118d467ff3d5cf3052b77824e03bdd7 Sat, 19 Nov 2016 20:58:28 +0300
+From: forumber <kidobeko@gmail.com>
+Date: Sat, 19 Nov 2016 20:56:55 +0300
+Subject: [PATCH] Disable block based installation
+
+diff --git a/core/Makefile b/core/Makefile
+index 9ab196a..d5d47d6 100644
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -1726,7 +1726,6 @@
+ 	@echo -e ${CL_YLW}"Package OTA:"${CL_RST}" $@"
+ 	$(hide) MKBOOTIMG=$(MKBOOTIMG) \
+ 	   $(OTA_FROM_TARGET_SCRIPT) -v \
+-	   --block \
+ 	   $(if $(WITH_LZMA_OTA), -z) \
+ 	   -p $(HOST_OUT) \
+ 	   -k $(KEY_CERT_PAIR) \
