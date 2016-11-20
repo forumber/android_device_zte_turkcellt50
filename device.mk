@@ -85,6 +85,10 @@ PRODUCT_PACKAGES += \
     libxml2 \
     camera.msm8226
 
+# Charger
+PRODUCT_PACKAGES += \
+    charger_res_images
+
 # Display
 PRODUCT_PACKAGES += \
     copybit.msm8226 \
