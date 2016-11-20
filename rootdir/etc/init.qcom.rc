@@ -60,6 +60,10 @@ on init
 
 on fs
     mount_all fstab.qcom
+    
+    # activate zram
+    swapon_all fstab.qcom
+    write /proc/sys/vm/page-cluster 0
 
 on early-boot
     # set RLIMIT_MEMLOCK to 64MB
