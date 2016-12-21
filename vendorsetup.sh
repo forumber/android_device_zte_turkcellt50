@@ -39,3 +39,13 @@ else
     echo 'ZRAM option patch is now applied';
 fi
 croot
+
+cd packages/apps/SoundRecorder
+if grep -q "mSharedPreferences.getString("requestedType", mRequestedType);" res/values/strings.xml
+then
+    git am ../../../device/zte/turkcellt50/patches/0001-Force-to-use-WAV.patch || git am --abort
+    echo 'Sound Recorder patch is now applied';
+else
+    echo 'Sound Recorder patch is already applied';
+fi
+croot
