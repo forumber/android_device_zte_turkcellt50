@@ -29,3 +29,13 @@ else
     echo 'CFQ option patch is now applied';
 fi
 croot
+
+cd packages/apps/Settings
+if grep -q "use_zram_summary" res/values/strings.xml
+then
+    echo 'ZRAM option patch is already applied';
+else
+    git am ../../../device/zte/turkcellt50/patches/0002-Add-an-option-for-activate-ZRAM.patch || git am --abort
+    echo 'ZRAM option patch is now applied';
+fi
+croot

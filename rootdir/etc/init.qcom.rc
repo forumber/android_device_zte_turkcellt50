@@ -696,6 +696,17 @@ on property:persist.sys.ssr.restart_level=*
 
 exec /system/bin/rm /data/system/default_values
 
+on property:persist.use_zram=true
+    # Read one page at a time for swap (default is 8)
+    write /proc/sys/vm/page-cluster 0
+    # Avoid evicting pages and use zram disk
+    write /proc/sys/vm/swappiness 100
+    # Enable swaps described in the fstab
+    swapon_all /fstab.qcom
+
+on property:persist.use_zram=false
+    exec /system/bin/swapoff /dev/block/zram0
+
 on charger
     # Enable Power modes and set the CPU Freq Sampling rates
     write /sys/module/lpm_levels/enable_low_power/l2 2

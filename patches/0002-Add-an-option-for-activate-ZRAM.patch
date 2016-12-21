@@ -1,0 +1,116 @@
+From 31884af8b74fb1f0fb3785fc0e450c7eee8c5bc0 Mon Sep 17 00:00:00 2001
+From: forumber <kidobeko@gmail.com>
+Date: Wed, 21 Dec 2016 20:28:07 +0300
+Subject: [PATCH 2/2] Add an option for activate ZRAM
+
+Change-Id: I2b4dacbca02896bfc8255d956b847e570b946b46
+---
+ res/values-tr/strings.xml                         |  2 ++
+ res/values/strings.xml                            |  3 +++
+ res/xml/development_prefs.xml                     |  5 +++++
+ src/com/android/settings/DevelopmentSettings.java | 17 +++++++++++++++++
+ 4 files changed, 27 insertions(+)
+
+diff --git a/res/values-tr/strings.xml b/res/values-tr/strings.xml
+index 244d7f6..1cf188c 100644
+--- a/res/values-tr/strings.xml
++++ b/res/values-tr/strings.xml
+@@ -2515,4 +2515,6 @@
+     <string name="slot_number" msgid="3762676044904653577">"(Yuva<xliff:g id="SLOT_NUM">%1$d</xliff:g>)"</string>
+     <string name="use_cfq">"CFQ I/O zamanlayıcısını kullan"</string>
+     <string name="use_cfq_summary">"Eğer telefonun rastgele kapanması ile ilgili bir probleminiz varsa, etkinleştirin"</string>
++    <string name="use_zram">"RAM\'ı sıkıştır"</string>
++    <string name="use_zram_summary">"Aktif ederseniz RAM daha iyi yönetilir fakat batarya daha çabuk bitebilir (yeniden başlatma önerilir)"</string>
+ </resources>
+diff --git a/res/values/strings.xml b/res/values/strings.xml
+index 285aca4..c6c6ff6 100644
+--- a/res/values/strings.xml
++++ b/res/values/strings.xml
+@@ -4823,6 +4823,9 @@
+     <string name="use_cfq">Use CFQ as I/O Scheduler</string>
+     <string name="use_cfq_summary">Enable it if you have random shut down problems</string>
+ 
++    <string name="use_zram">Compress RAM</string>
++    <string name="use_zram_summary">If you enable, your RAM management will be better but you may have battery issues</string>
++
+     <!-- UI debug setting: disable USB audio routing title [CHAR LIMIT=32] -->
+     <string name="usb_audio_disable_routing">Disable USB audio routing</string>
+     <!-- UI debug setting: disable USB audio routing summary [CHAR LIMIT=50] -->
+diff --git a/res/xml/development_prefs.xml b/res/xml/development_prefs.xml
+index 6d67474..7203a2d 100644
+--- a/res/xml/development_prefs.xml
++++ b/res/xml/development_prefs.xml
+@@ -43,6 +43,11 @@
+         android:summary="@string/use_cfq_summary"/>
+ 
+     <SwitchPreference
++        android:key="use_zram"
++        android:title="@string/use_zram"
++        android:summary="@string/use_zram_summary"/>
++
++    <SwitchPreference
+         android:key="enable_quickboot"
+         android:title="@string/enable_quickboot_title"
+         android:summary="@string/enable_quickboot_summary" />
+diff --git a/src/com/android/settings/DevelopmentSettings.java b/src/com/android/settings/DevelopmentSettings.java
+index 9ed52c7..07caeeb 100644
+--- a/src/com/android/settings/DevelopmentSettings.java
++++ b/src/com/android/settings/DevelopmentSettings.java
+@@ -131,9 +131,11 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
+     private static final String SIMULATE_COLOR_SPACE = "simulate_color_space";
+     private static final String USE_AWESOMEPLAYER_KEY = "use_awesomeplayer";
+     private static final String USE_CFQ_KEY = "use_cfq";
++    private static final String USE_ZRAM_KEY = "use_zram";
+     private static final String USB_AUDIO_KEY = "usb_audio";
+     private static final String USE_AWESOMEPLAYER_PROPERTY = "persist.sys.media.use-awesome";
+     private static final String USE_CFQ_PROPERTY = "persist.sys.io.scheduler";
++    private static final String USE_ZRAM_PROPERTY = "persist.use_zram";
+     private static final String SHOW_CPU_USAGE_KEY = "show_cpu_usage";
+     private static final String FORCE_HARDWARE_UI_KEY = "force_hw_ui";
+     private static final String FORCE_MSAA_KEY = "force_msaa";
+@@ -260,6 +262,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
+ 
+     private SwitchPreference mUseAwesomePlayer;
+     private SwitchPreference mUseCFQ;
++    private SwitchPreference mUseZRAM;
+     private SwitchPreference mUSBAudio;
+     private SwitchPreference mImmediatelyDestroyActivities;
+ 
+@@ -427,6 +430,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
+         mSimulateColorSpace = addListPreference(SIMULATE_COLOR_SPACE);
+         mUseAwesomePlayer = findAndInitSwitchPref(USE_AWESOMEPLAYER_KEY);
+         mUseCFQ = findAndInitSwitchPref(USE_CFQ_KEY);
++        mUseZRAM = findAndInitSwitchPref(USE_ZRAM_KEY);
+         mUSBAudio = findAndInitSwitchPref(USB_AUDIO_KEY);
+ 
+         mImmediatelyDestroyActivities = (SwitchPreference) findPreference(
+@@ -1295,6 +1299,17 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
+         pokeSystemProperties();
+     }
+ 
++    private void updateUseZRAMOptions() {
++        updateSwitchPreference(
++                mUseZRAM, SystemProperties.getBoolean(USE_ZRAM_PROPERTY, false));
++    }
++
++    private void writeUseZRAMOptions() {
++        SystemProperties.set(
++                USE_ZRAM_PROPERTY, mUseZRAM.isChecked() ? "true" : "false");
++        pokeSystemProperties();
++    }
++
+     private void updateUSBAudioOptions() {
+         updateSwitchPreference(mUSBAudio, Settings.Secure.getInt(getContentResolver(),
+                 Settings.Secure.USB_AUDIO_AUTOMATIC_ROUTING_DISABLED, 0) != 0);
+@@ -1799,6 +1814,8 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
+             writeUseAwesomePlayerOptions();
+         } else if (preference == mUseCFQ) {
+             writeUseCFQOptions();
++        } else if (preference == mUseZRAM) {
++            writeUseZRAMOptions();
+         } else if (preference == mUSBAudio) {
+             writeUSBAudioOptions();
+         } else if (preference == mAdvancedReboot) {
+-- 
+2.7.4
+
