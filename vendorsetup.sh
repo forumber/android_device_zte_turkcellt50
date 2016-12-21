@@ -19,3 +19,13 @@ else
     echo 'Block based flashing is already disabled';
 fi
 croot
+
+cd packages/apps/Settings
+if grep -q "CFQ" res/values/strings.xml
+then
+    echo 'CFQ option patch is already applied';
+else
+    git am ../../../device/zte/turkcellt50/patches/0001-Add-option-to-use-CFQ-I-O.patch || git am --abort
+    echo 'CFQ option patch is now applied';
+fi
+croot

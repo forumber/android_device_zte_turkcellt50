@@ -55,7 +55,7 @@ ro.qualcomm.cabl=0
 ro.vendor.extension_library=/system/vendor/lib/libqc-opt.so
 
 # Scheduler
-sys.io.scheduler=bfq
+persist.sys.io.scheduler=bfq
 
 # OTG
 persist.sys.isUsbOtgEnabled=true
