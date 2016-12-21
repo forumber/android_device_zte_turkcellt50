@@ -41,11 +41,11 @@ fi
 croot
 
 cd packages/apps/SoundRecorder
-if grep -q "mSharedPreferences.getString("requestedType", mRequestedType);" res/values/strings.xml
+if grep -q "mRequestedType = AUDIO_WAVE_2CH_LPCM" src/com/android/soundrecorder/SoundRecorder.java
 then
+    echo 'Sound Recorder patch is already applied';
+else
     git am ../../../device/zte/turkcellt50/patches/0001-Force-to-use-WAV.patch || git am --abort
     echo 'Sound Recorder patch is now applied';
-else
-    echo 'Sound Recorder patch is already applied';
 fi
 croot
