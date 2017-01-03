@@ -1,26 +1,27 @@
-From 6c77ac4af8c83d9e60795a3879c2fd514f6de7cc Mon Sep 17 00:00:00 2001
+From 397b73386661fd3adca82aae04160f75d738e639 Mon Sep 17 00:00:00 2001
 From: forumber <kidobeko@gmail.com>
-Date: Wed, 21 Dec 2016 20:34:50 +0300
+Date: Tue, 3 Jan 2017 11:26:50 +0300
 Subject: [PATCH] Force to use WAV
 
-Change-Id: I4762919fdc4085d574ccf8d8fb7016a440ba26aa
 ---
- src/com/android/soundrecorder/SoundRecorder.java | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ src/com/android/soundrecorder/SoundRecorder.java | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/src/com/android/soundrecorder/SoundRecorder.java b/src/com/android/soundrecorder/SoundRecorder.java
-index 220ea2b..e04f9e7 100644
+index 220ea2b..3a2cd3f 100644
 --- a/src/com/android/soundrecorder/SoundRecorder.java
 +++ b/src/com/android/soundrecorder/SoundRecorder.java
-@@ -410,7 +410,7 @@ public class SoundRecorder extends Activity
+@@ -410,8 +410,8 @@ public class SoundRecorder extends Activity
          }
  
          mPath = mSharedPreferences.getInt("path", mPath);
 -        mRequestedType = mSharedPreferences.getString("requestedType", mRequestedType);
+-        mFileType = mSharedPreferences.getInt("fileType", mFileType);
 +        mRequestedType = AUDIO_WAVE_2CH_LPCM;
-         mFileType = mSharedPreferences.getInt("fileType", mFileType);
++        mFileType = 2;
          mStoragePath = mSharedPreferences.getString("storagePath", mStoragePath);
          if (!mWAVSupport &&
+             (mRequestedType == AUDIO_WAVE_2CH_LPCM ||
 -- 
 2.7.4
 
