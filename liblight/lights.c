@@ -47,9 +47,6 @@ char const*const RED_LED_FILE
 char const*const GREEN_LED_FILE
         = "/sys/class/leds/green/brightness";
 
-char const*const BLUE_LED_FILE
-        = "/sys/class/leds/blue/brightness";
-
 char const*const LCD_FILE
         = "/sys/class/leds/lcd-backlight/brightness";
 
@@ -58,9 +55,6 @@ char const*const RED_BLINK_FILE
 
 char const*const GREEN_BLINK_FILE
         = "/sys/class/leds/green/blink";
-
-char const*const BLUE_BLINK_FILE
-        = "/sys/class/leds/blue/blink";
 
 #define RAMP_SIZE 8
 static int BRIGHTNESS_RAMP[RAMP_SIZE]
@@ -211,17 +205,14 @@ set_speaker_light_locked(struct light_device_t* dev,
     // disable all blinking to start
     write_int(RED_BLINK_FILE, 0);
     write_int(GREEN_BLINK_FILE, 0);
-    write_int(BLUE_BLINK_FILE, 0);
 
     if (blink) {
         // start the party
         write_int(RED_BLINK_FILE, red);
         write_int(GREEN_BLINK_FILE, green);
-        write_int(BLUE_BLINK_FILE, blue);
     } else {
         write_int(RED_LED_FILE, red);
         write_int(GREEN_LED_FILE, green);
-        write_int(BLUE_LED_FILE, blue);
     }
 
 
